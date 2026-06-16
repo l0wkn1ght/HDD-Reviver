@@ -12,11 +12,10 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    # Switched to GraalVM for high-performance optimization & faster build compilation
     - name: Set up GraalVM JDK 17
       uses: actions/setup-java@v4
       with:
-        java-version: '17.0.12' # 1.20.1 strictly uses Java 17
+        java-version: '17.0.12' 
         distribution: 'graalvm'
 
     - name: Setup Gradle
@@ -24,20 +23,21 @@ jobs:
       with:
         cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
+    - name: Grant Execute Permission to Gradlew
+      run: chmod +x gradlew
+
     # 1. CODE QUALITY CHECK
-    # Catches style issues, resource leaks, and unclosed file streams (critical for HDD mods)
     - name: Run Static Code Analysis
       run: ./gradlew checkstyleMain --continue || echo "Checkstyle found issues!"
 
     # 2. GRADLE COMPILATION & MIXIN TRACKING
-    # Compiles the mod and validates that your Mixins inject correctly without target conflicts
+    # FIXED: Removed the stray "type: run" text block that broke the YAML structure
     - name: Build and Validate Mixins
       run: ./gradlew build
 
     # 3. CRASH LOG DIAGNOSTICS (Artifact Storage)
-    # FIXED: Changed upload-artifacts to upload-artifact (removed the 's')
     - name: Archive Build & Crash Diagnostics
-      if: always() # Runs even if the build fails
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: compilation-diagnostics
