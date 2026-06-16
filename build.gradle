@@ -1,6 +1,7 @@
 plugins {
 	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
 	id 'maven-publish'
+	id 'checkstyle'
 }
 
 version = project.mod_version
@@ -72,4 +73,9 @@ publishing {
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
 	}
+}
+
+checkstyle {
+	toolVersion = '10.12.5'
+	configFile = file("${project.rootDir}/checkstyle.xml")
 }
