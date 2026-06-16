@@ -16,7 +16,7 @@ jobs:
     - name: Set up GraalVM JDK 17
       uses: actions/setup-java@v4
       with:
-        java-version: '17' # 1.20.1 strictly uses Java 17
+        java-version: '17.0.12' # 1.20.1 strictly uses Java 17
         distribution: 'graalvm'
 
     - name: Setup Gradle
