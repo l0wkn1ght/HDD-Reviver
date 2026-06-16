@@ -12,12 +12,14 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Set up GraalVM JDK 17
+    # FIXED: Upgraded from 17.0.12 to 21 to satisfy the modern Fabric Loom plugin dependency
+    - name: Set up GraalVM JDK 21
       uses: actions/setup-java@v4
       with:
-        java-version: '17.0.12' 
+        java-version: '21' 
         distribution: 'graalvm'
 
+    # The rest of your steps stay exactly the same
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
@@ -31,7 +33,6 @@ jobs:
       run: ./gradlew checkstyleMain --continue || echo "Checkstyle found issues!"
 
     # 2. GRADLE COMPILATION & MIXIN TRACKING
-    # FIXED: Removed the stray "type: run" text block that broke the YAML structure
     - name: Build and Validate Mixins
       run: ./gradlew build
 
